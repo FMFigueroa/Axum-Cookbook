@@ -1,6 +1,8 @@
 use axum::{response::Html, routing::get, Router};
 use std::net::SocketAddr;
 
+//cmd: cargo watch -q -c -w src/ -x run
+
 #[tokio::main]
 async fn main() {
     let routes_hello = Router::new().route(
