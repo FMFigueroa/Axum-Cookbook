@@ -1,18 +1,27 @@
 use axum::{
+    extract::Query,
     response::{Html, IntoResponse},
     routing::get,
     Router,
 };
+use serde::Deserialize;
 use std::net::SocketAddr;
 
 //cmd: cargo watch -q -c -w src/ -x run
 
 // region: ---Handler Hello
-async fn handler_hello() -> impl IntoResponse {
-    println!("->> {:<12} - handler-hello", "HANDLER");
-    Html("Hello <strong>World!!!</strong>")
-    // endregion: ---Handler Hello
+#[derive(Debug, Deserialize)]
+struct HelloParams {
+    name: Option<String>,
 }
+
+async fn handler_hello(Query(params): Query<HelloParams>) -> impl IntoResponse {
+    println!("->> {:<12} - handler-hello - {params:?}", "HANDLER");
+
+    let name = params.name.as_deref().unwrap_or("world!");
+    Html(format!("Hello <strong>{name}</strong>"))
+}
+// endregion: ---Handler Hello
 
 #[tokio::main]
 async fn main() {
