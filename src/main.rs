@@ -1,5 +1,5 @@
 use axum::{
-    extract::Query,
+    extract::{Path, Query},
     response::{Html, IntoResponse},
     routing::get,
     Router,
@@ -15,17 +15,27 @@ struct HelloParams {
     name: Option<String>,
 }
 
+// e.g., `/hello?name=Jen`
 async fn handler_hello(Query(params): Query<HelloParams>) -> impl IntoResponse {
     println!("->> {:<12} - handler-hello - {params:?}", "HANDLER");
 
     let name = params.name.as_deref().unwrap_or("world!");
     Html(format!("Hello <strong>{name}</strong>"))
 }
+
+// e.g., `/hello2/Mike`
+async fn handler_hello2(Path(name): Path<String>) -> impl IntoResponse {
+    println!("->> {:<12} - handler-hello2 - {name:?}", "HANDLER");
+
+    Html(format!("Hello <strong>{name}</strong>"))
+}
 // endregion: ---Handler Hello
 
 #[tokio::main]
 async fn main() {
-    let routes_hello = Router::new().route("/hello", get(handler_hello));
+    let routes_hello = Router::new()
+        .route("/hello", get(handler_hello))
+        .route("/hello2/:name", get(handler_hello2));
 
     // region: ---Start Server
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
