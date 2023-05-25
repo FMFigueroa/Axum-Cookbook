@@ -8,6 +8,7 @@ use axum::{
 };
 use serde::Deserialize;
 use std::net::SocketAddr;
+use tower_cookies::CookieManagerLayer;
 use tower_http::services::ServeDir;
 
 mod error;
@@ -50,6 +51,7 @@ fn routes_static() -> Router {
     Router::new().nest_service("/", get_service(ServeDir::new("public/")))
 }
 
+// region: ---Handler Main Mapper
 async fn main_response_mapper(res: Response) -> Response {
     println!("->> {:<12} - main_response_mapper", "RESP_MAPPER");
 
@@ -64,6 +66,7 @@ async fn main() {
         .merge(routes_hello())
         .merge(web::routes_login::routes())
         .layer(middleware::map_response(main_response_mapper))
+        .layer(CookieManagerLayer::new())
         .fallback_service(routes_static());
 
     // region: ---Start Server
