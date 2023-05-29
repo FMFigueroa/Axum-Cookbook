@@ -12,20 +12,11 @@ use tower_cookies::Cookies;
 use crate::{ctx::Ctx, web::AUTH_TOKEN, Error, Result};
 
 pub async fn mw_require_auth<B>(
-    cookies: Cookies, req: Request<B>, next: Next<B>,
+    ctx: Result<Ctx>, req: Request<B>, next: Next<B>,
 ) -> Result<Response> {
-    println!("->> {:<12} - mw_require_auth", "MIDDLEWARE");
+    println!("->> {:<12} - mw_require_auth - {ctx:?}", "MIDDLEWARE");
 
-    let auth_token = cookies.get(AUTH_TOKEN).map(|c| c.value().to_string());
-
-    //TODO: Real auth-token parsing & validation
-
-    // Parse token.
-    let (user_id, exp, sign) = auth_token
-        .ok_or(Error::AuthFailNotAuthtokenCookie)
-        .and_then(parse_token)?;
-
-    // TODO: Token components validation.
+    ctx?;
 
     Ok(next.run(req).await)
 }
