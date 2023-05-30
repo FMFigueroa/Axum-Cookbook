@@ -1,7 +1,7 @@
 //! Simplistic Model Layer
 //! (with mock-store layer)
 
-use crate::{Error, Result, ctx::Ctx};
+use crate::{ctx::Ctx, Error, Result};
 use serde::{Deserialize, Serialize};
 use std::sync::{Arc, Mutex};
 
