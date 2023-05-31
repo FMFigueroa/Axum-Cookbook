@@ -6,12 +6,14 @@ use axum::{
     middleware,
     response::{Html, IntoResponse, Response},
     routing::{get, get_service},
-    Router,
+    Json, Router,
 };
 use serde::Deserialize;
+use serde_json::json;
 use std::net::SocketAddr;
 use tower_cookies::CookieManagerLayer;
 use tower_http::services::ServeDir;
+use uuid::Uuid;
 
 mod ctx;
 mod error;
@@ -58,10 +60,34 @@ fn routes_static() -> Router {
 // region: ---Handler Main Mapper
 async fn main_response_mapper(res: Response) -> Response {
     println!("->> {:<12} - main_response_mapper", "RESP_MAPPER");
+    let uuid = Uuid::new_v4();
+
+    // -- Get the eventual response error.
+    let service_error = res.extensions().get::<Error>();
+    let cliente_status_error = service_error.map(|se| se.client_status_and_error());
+
+    // -- If client error, build the new response.
+    let error_repsonse = cliente_status_error
+        .as_ref()
+        .map(|(status_code, client_error)| {
+            let client_error_body = json!({
+                "error": {
+                    "type": client_error.as_ref(),
+                    "req_uuid": uuid.to_string(),
+               }
+            });
+
+            println!("-->> client_error_body: {client_error_body}");
+
+            //Build the new response from the cleint_error_body
+            (*status_code, Json(client_error_body)).into_response()
+        });
+
+    // TODO:  Build and log the server log line.
+    println!("-->> server log line - {uuid} - Error: {service_error:?}");
 
     println!();
-
-    res
+    error_repsonse.unwrap_or(res)
 }
 
 #[tokio::main]
