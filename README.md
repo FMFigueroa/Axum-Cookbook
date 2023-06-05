@@ -1,7 +1,7 @@
-# 🚀 Axum cookbook
+# Axum cookbook
 
 <p align="center">
-<img  src="https://res.cloudinary.com/lenobit/image/upload/v1669142817/Rust%20Essential%20Training/assets/banner-github_k63n9t.png">
+<img  src="https://res.cloudinary.com/rustlatamgroup/image/upload/v1685920322/assets/Banner_LinkedIn_gvrmzo.png">
 </p>
 
 ## Breve Descripción
@@ -17,8 +17,6 @@ El crate mas popular de los frameworks backend en Rust se llama Tokio; pero Toki
 - [tokio](https://tokio.rs): platform for writing asynchronous I/O backed applications.
 
 - [tower](https://crates.io/crates/tower): library for building robust clients and servers.
-
-- [hyper](https://hyper.rs/): fast and safe HTTP library for the Rust language creted by tokio.
 
 - [Serde](https://crates.io/crates/serde): serialization/deserialization framework.
 
