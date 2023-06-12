@@ -8,6 +8,6 @@
 
 - [tower](https://crates.io/crates/tower): library for building robust clients and servers.
 
-- [Serde](https://crates.io/crates/serde): serialization/deserialization framework.
+- [serde](https://crates.io/crates/serde): serialization/deserialization framework.
 
 <hr>
