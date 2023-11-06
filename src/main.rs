@@ -57,7 +57,7 @@ fn routes_hello() -> Router {
 
 // region: ---Static Route
 fn routes_static() -> Router {
-    Router::new().nest_service("/", get_service(ServeDir::new("public/")))
+    Router::new().nest_service("/", get_service(ServeDir::new("web-folder")))
 }
 
 // region: ---Handler Main Mapper
