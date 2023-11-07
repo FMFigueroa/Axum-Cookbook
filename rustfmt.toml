@@ -1,3 +1,5 @@
+edition = "2021"
+
 # Maximum line width
 max_width = 100
 comment_width = 100
