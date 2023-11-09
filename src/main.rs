@@ -1,11 +1,12 @@
 use axum::{
     extract::{Path, Query},
     response::{Html, IntoResponse},
-    routing::get,
+    routing::{get, get_service},
     Router,
 };
 use serde::Deserialize;
 use std::net::SocketAddr;
+use tower_http::services::ServeDir;
 
 //cmd: cargo watch -q -c -w src/ -x run
 
@@ -39,9 +40,16 @@ fn routes_hello() -> Router {
 }
 // endregion: ---Routes Hello
 
+// region: ---Static Route
+fn routes_static() -> Router {
+    Router::new().nest_service("/", get_service(ServeDir::new("public/")))
+}
+
 #[tokio::main]
 async fn main() {
-    let routes_all = Router::new().merge(routes_hello());
+    let routes_all = Router::new()
+        .merge(routes_hello())
+        .fallback_service(routes_static());
 
     // region: ---Start Server
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
