@@ -1,5 +1,5 @@
 [package]
-name = "axum_cookbook"
+name = "axum-cookbook"
 version = "0.1.0"
 edition = "2021"
 
@@ -15,6 +15,9 @@ serde_with = "3.4"
 axum = "0.6.18"
 tower-cookies = "0.9.0"
 tower-http = {version = "0.4", features = ["fs"]}
+# -- Tracing
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
 # -- Others
 lazy-regex ="3.0.2"
 async-trait = "0.1"
