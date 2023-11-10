@@ -1,3 +1,5 @@
+// For early development
+#![allow(unused)]
 //! Simplistic Model Layer
 //! (with mock-store layer)
 
