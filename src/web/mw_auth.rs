@@ -1,3 +1,6 @@
+// For early development
+#![allow(unused)]
+
 use axum::{http::Request, middleware::Next, response::Response};
 use lazy_regex::regex_captures;
 use tower_cookies::Cookies;
